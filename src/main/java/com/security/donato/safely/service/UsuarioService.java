@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UsuarioService {
 
-    Boolean cadastrarUsuario(UsuarioDto usuarioDto);
+    Boolean cadastrarUsuario(UsuarioDto usuarioDto) throws Exception;
 }

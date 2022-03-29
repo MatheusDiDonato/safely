@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -36,10 +38,10 @@ public class Usuario implements Serializable {
     private String login;
 
     @Column
-    private Date dataCriacaoUsuario;
+    private LocalDateTime dataCriacaoUsuario;
 
     @Column
-    private Date dataAtualizacaoUsuario;
+    private LocalDateTime dataAtualizacaoUsuario;
 
     @OneToOne
     @JoinColumn(name = "ID_STATUS")

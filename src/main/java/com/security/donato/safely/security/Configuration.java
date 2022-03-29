@@ -14,14 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class Configuration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService myUserDetailService;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().disable();
     }
-
 
 
 }

@@ -1,26 +1,28 @@
 package com.security.donato.safely.utils;
 
-import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.Base64;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 
 @Slf4j
-@UtilityClass
+@Service
 public class PasswordUtils {
 
+    private final PasswordEncoder passwordEncoder;
+
+    public PasswordUtils(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     public String encoder(String senha) {
-        BCryptPasswordEncoder bCriptEncoder = new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2Y);
-        return bCriptEncoder.encode(senha);
+        return passwordEncoder.encode(senha);
     }
 
 
-    public Boolean passwordIsMatch(String senhaBanco, String senhaRecebida) {
-        BCryptPasswordEncoder bCriptEncoder = new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2Y);
-        log.info(String.valueOf(bCriptEncoder.matches(senhaBanco, senhaRecebida)));
-        return bCriptEncoder.matches(senhaBanco, senhaRecebida);
+    public Boolean passwordIsMatch(String senhaRecebida, String senhaBanco) {
+        log.info(String.valueOf(passwordEncoder.matches(senhaRecebida, senhaBanco)));
+        return passwordEncoder.matches(senhaRecebida, senhaBanco);
     }
 
 
