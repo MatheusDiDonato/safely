@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 public class Configuration extends WebSecurityConfigurerAdapter {
@@ -16,26 +17,11 @@ public class Configuration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService myUserDetailService;
 
-
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
-        builder.userDetailsService(username -> myUserDetailService.loadUserByUsername(username));
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/")
-                .authenticated()
-                .and()
-                .csrf()
-                .disable()
-                .headers()
-                .frameOptions()
-                .disable();
+        http.csrf().disable().cors().disable();
     }
+
+
 
 }
