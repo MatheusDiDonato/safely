@@ -41,11 +41,11 @@ public class UsuarioServiceImpl implements UsuarioService {
                     , usuarioDto.getEmail());
             switch (usuario.getStatusUsuario().getIdStatus().intValue()) {
                 case 1:
-                    throw new UsuarioException("Usuario aguardando confirmação de cadastro", HttpStatus.UNAUTHORIZED.value());
+                    throw new UsuarioException(statusRepository.findDescricaoById(1L), HttpStatus.UNAUTHORIZED.value());
                 case 2:
-                    throw new UsuarioException("Usuario já cadastrado", HttpStatus.UNAUTHORIZED.value());
+                    throw new UsuarioException(statusRepository.findDescricaoById(2L), HttpStatus.UNAUTHORIZED.value());
                 case 3:
-                    throw new UsuarioException("Usuario já cadastrado", HttpStatus.UNAUTHORIZED.value());
+                    throw new UsuarioException(statusRepository.findDescricaoById(3L), HttpStatus.UNAUTHORIZED.value());
             }
         }
         usuarioRepository.save(Usuario.builder()
