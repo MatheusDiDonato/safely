@@ -5,7 +5,6 @@ import br.com.caelum.stella.validation.InvalidStateException;
 import com.security.donato.safely.domain.Usuario;
 import com.security.donato.safely.dto.UsuarioDto;
 import com.security.donato.safely.exception.CpfInvalidException;
-import com.security.donato.safely.exception.StatusException;
 import com.security.donato.safely.repository.StatusRepository;
 import com.security.donato.safely.repository.UsuarioRepository;
 import com.security.donato.safely.security.exception.UsuarioException;
@@ -38,7 +37,16 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new CpfInvalidException("Cpf incorreto.", HttpStatus.NOT_FOUND.value());
         }
         if (usuarioUtils.userExists(usuarioDto.getLogin(), usuarioDto.getCpf(), usuarioDto.getEmail())) {
-            throw new UsuarioException("Usuario já cadastrado", HttpStatus.NOT_FOUND.value());
+            Usuario usuario = usuarioRepository.findUsuarioByLoginOrEmailOrCpf(usuarioDto.getLogin(), usuarioDto.getCpf()
+                    , usuarioDto.getEmail());
+            switch (usuario.getStatusUsuario().getIdStatus().intValue()) {
+                case 1:
+                    throw new UsuarioException("Usuario aguardando confirmação de cadastro", HttpStatus.UNAUTHORIZED.value());
+                case 2:
+                    throw new UsuarioException("Usuario já cadastrado", HttpStatus.UNAUTHORIZED.value());
+                case 3:
+                    throw new UsuarioException("Usuario já cadastrado", HttpStatus.UNAUTHORIZED.value());
+            }
         }
         usuarioRepository.save(Usuario.builder()
                 .cpf(usuarioDto.getCpf())
@@ -47,7 +55,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .login(usuarioDto.getLogin())
                 .email(usuarioDto.getEmail())
                 .senha(passwordUtils.encoder(usuarioDto.getSenha()))
-                .StatusUsuario(statusRepository.findById(usuarioDto.getStatusUsuario()).orElseThrow(() -> new StatusException("Status não encontrado", HttpStatus.NOT_FOUND.value())))
+                .StatusUsuario(statusRepository.findById(1L).get())
                 .build());
         return true;
     }
