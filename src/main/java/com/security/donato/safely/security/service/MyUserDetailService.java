@@ -5,6 +5,7 @@ import com.security.donato.safely.domain.Usuario;
 import com.security.donato.safely.repository.ContextoRepository;
 import com.security.donato.safely.repository.UsuarioRepository;
 import com.security.donato.safely.security.UsuarioSistema;
+import com.security.donato.safely.service.serviceImpl.UsuarioServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,12 +26,12 @@ public class MyUserDetailService implements UserDetailsService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioServiceImpl usuarioServiceImpl;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = usuarioService.findUsuarioByLogin(username);
+        Usuario usuario = usuarioServiceImpl.findUsuarioByLogin(username);
         return new UsuarioSistema(usuario.getLogin(), usuario.getSenha(), authorities(usuario));
     }
 

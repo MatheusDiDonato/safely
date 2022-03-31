@@ -1,5 +1,6 @@
 package com.security.donato.safely;
 
+import br.com.caelum.stella.validation.CPFValidator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -17,6 +18,11 @@ public class SafeLyApplication {
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CPFValidator createCpfValidator(){
+        return new CPFValidator();
     }
 
 }
